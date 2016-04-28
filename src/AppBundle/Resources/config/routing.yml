@@ -1,0 +1,8 @@
+
+complete:
+    path:     /{orderNumber}/complete
+    defaults: { _controller: AppBundle:Payment:complete }
+
+details:
+    path:     /{orderNumber}/details
+    defaults: { _controller: AppBundle:Payment:details }

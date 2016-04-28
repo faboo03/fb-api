@@ -42,13 +42,19 @@ class Order
      */
     private $name;
 
-    /** @ORM\OneToOne(targetEntity="JMS\Payment\CoreBundle\Entity\PaymentInstruction") */
+    /**
+     * @ORM\OneToOne(targetEntity="JMS\Payment\CoreBundle\Entity\PaymentInstruction")
+     */
     private $paymentInstruction;
 
-    /** @ORM\Column(type="string", unique = true) */
+    /**
+     * @ORM\Column(type="string", unique = true)
+     */
     private $orderNumber;
 
-    /** @ORM\Column(type="decimal", precision = 2) */
+    /**
+     * @ORM\Column(type="decimal", precision = 2)
+     */
     private $amount;
 
     // ...

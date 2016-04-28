@@ -1,10 +1,26 @@
 services:
     resource.user:
         parent:    "api.resource"
-        arguments: [ "AppBundle\Entity\User" ]
+        arguments: [ "AppBundle\\Entity\\User" ]
         calls:
             -      method:    "initNormalizationContext"
                    arguments: [ { groups: [ "user_read" ] } ]
             -      method:    "initDenormalizationContext"
                    arguments: [ { groups: [ "user_write" ] } ]
         tags:      [ { name: "api.resource" } ]
+
+    resource.person:
+        parent:    "api.resource"
+        arguments: [ "AppBundle\\Entity\\Person" ]
+        tags:      [ { name: "api.resource" } ]
+
+    resource.order:
+        parent:    "api.resource"
+        arguments: [ "AppBundle\\Entity\\Order" ]
+        tags:      [ { name: "api.resource" } ]
+
+
+    payment.listener:
+        class: "AppBundle\EventListener\PaymentListener"
+        arguments: ["@router"]
+        tags:  [ { name: "kernel.event_listener", event: "api.post_create", method: "onPostCreate" } ]
