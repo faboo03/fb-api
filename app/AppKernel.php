@@ -20,6 +20,9 @@ class AppKernel extends Kernel
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new FOS\HttpCacheBundle\FOSHttpCacheBundle(),
 
+            new FOS\UserBundle\FOSUserBundle(),
+            new JMS\Payment\CoreBundle\JMSPaymentCoreBundle(),
+
             new AppBundle\AppBundle(),
         ];
 
