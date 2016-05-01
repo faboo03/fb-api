@@ -23,6 +23,8 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new JMS\Payment\CoreBundle\JMSPaymentCoreBundle(),
 
+            new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
+
             new AppBundle\AppBundle(),
         ];
 

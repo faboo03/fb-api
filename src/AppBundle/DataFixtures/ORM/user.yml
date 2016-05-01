@@ -5,3 +5,9 @@ AppBundle\Entity\User:
         enabled: true
         salt: <md5()>
         password: <md5()>
+    fabien:
+        username: "fabien"
+        email: "fabien.rondeau@stadline.com"
+        enabled: true
+        salt: "i0ba0zt09qg4480808gk800w8g4ggck"
+        password: "$2y$13$i0ba0zt09qg4480808gk8uwpYkZpjJiIxYRAi1Y1Cf79XtXjIM1Jy"

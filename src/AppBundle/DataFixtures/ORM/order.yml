@@ -3,5 +3,5 @@ AppBundle\Entity\Order:
         description: <text(255)>
         name: <text(22)>
         orderNumber: <md5()>
-        amount: <randomFloat(2)>
+        amount: <randomFloat(2, 0, 400)>
         user: @user*
