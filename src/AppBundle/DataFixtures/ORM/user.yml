@@ -1,0 +1,7 @@
+AppBundle\Entity\User:
+    user_{1..10}:
+        username: <userName()>
+        email: <email()>
+        enabled: true
+        salt: <md5()>
+        password: <md5()>

@@ -1,0 +1,7 @@
+AppBundle\Entity\Order:
+    order_{1..10}:
+        description: <text(255)>
+        name: <text(22)>
+        orderNumber: <md5()>
+        amount: <randomFloat(2)>
+        user: @user*

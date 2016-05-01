@@ -12,7 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @see http://schema.org/Order Documentation on Schema.org
  *
- * @ORM\Entity
+ * @ORM\Table(name="order_ref")
+ * @ORM\Entity()
  * @Iri("http://schema.org/Order")
  */
 class Order
@@ -45,7 +46,7 @@ class Order
     /**
      * @ORM\OneToOne(targetEntity="JMS\Payment\CoreBundle\Entity\PaymentInstruction")
      */
-    private $paymentInstruction;
+    private $paymentInstruction = null;
 
     /**
      * @ORM\Column(type="string", unique = true)
@@ -53,16 +54,49 @@ class Order
     private $orderNumber;
 
     /**
+     * @param mixed $orderNumber
+     */
+    public function setOrderNumber($orderNumber)
+    {
+        $this->orderNumber = $orderNumber;
+    }
+
+    /**
+     * @param mixed $amount
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+    }
+
+    /**
      * @ORM\Column(type="decimal", precision = 2)
      */
     private $amount;
 
-    // ...
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
 
-    public function __construct($amount, $orderNumber)
+    /**
+     * @return User
+     */
+    public function getUser()
     {
-        $this->amount = $amount;
-        $this->orderNumber = $orderNumber;
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+        return $this;
     }
 
     public function getOrderNumber()
