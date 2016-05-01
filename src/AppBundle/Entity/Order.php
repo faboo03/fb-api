@@ -54,6 +54,19 @@ class Order
     private $orderNumber;
 
     /**
+     * @ORM\Column(type="decimal", precision = 2)
+     */
+    private $amount;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"}, inversedBy="orders")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
      * @param mixed $orderNumber
      */
     public function setOrderNumber($orderNumber)
@@ -68,19 +81,6 @@ class Order
     {
         $this->amount = $amount;
     }
-
-    /**
-     * @ORM\Column(type="decimal", precision = 2)
-     */
-    private $amount;
-
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    private $user;
 
     /**
      * @return User

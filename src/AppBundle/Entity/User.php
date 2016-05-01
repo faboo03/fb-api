@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -58,4 +59,49 @@ class User extends BaseUser
      * @Groups({"user_read", "user_write"})
      */
     protected $roles;
+
+    /**
+     * @var User
+     *
+     * @ORM\OneToMany(targetEntity="Order", mappedBy="user")
+     */
+    protected $orders;
+
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return User
+     */
+    public function getOrders()
+    {
+        return $this->orders;
+    }
+
+    /**
+     * @param User $orders
+     */
+    public function setOrders($orders)
+    {
+        $this->orders = $orders;
+    }
+
 }

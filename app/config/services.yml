@@ -12,9 +12,16 @@ services:
     resource.order:
         parent:    "api.resource"
         arguments: [ "AppBundle\\Entity\\Order" ]
+        calls:
+            -      method:    "initFilters"
+                   arguments: [ [ "@resource.user.order_filter" ] ]
         tags:      [ { name: "api.resource" } ]
 
     payment.listener:
         class: "AppBundle\\EventListener\\PaymentListener"
         arguments: ["@router"]
         tags:  [ { name: "kernel.event_listener", event: "api.post_create", method: "onPostCreate" } ]
+
+    resource.user.order_filter:
+        class:    "AppBundle\\Filter\\UserFilter"
+        arguments: ["@security.token_storage","@doctrine"]
