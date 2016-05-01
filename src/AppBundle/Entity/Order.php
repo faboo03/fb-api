@@ -6,6 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Dunglas\ApiBundle\Annotation\Iri;
 use JMS\Payment\CoreBundle\Entity\PaymentInstruction;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * An order is a confirmation of a transaction (a receipt), which can contain multiple line items, each represented by an Offer that has been accepted by the customer.
@@ -15,6 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="order_ref")
  * @ORM\Entity()
  * @Iri("http://schema.org/Order")
+ * @HasLifecycleCallbacks
  */
 class Order
 {
@@ -32,6 +37,9 @@ class Order
      * @ORM\Column(nullable=true)
      * @Assert\Type(type="string")
      * @Iri("https://schema.org/description")
+     *
+     * @Groups({"order_read", "order_write"})
+     *
      */
     private $description;
     /**
@@ -40,6 +48,7 @@ class Order
      * @ORM\Column(nullable=true)
      * @Assert\Type(type="string")
      * @Iri("https://schema.org/name")
+     * @Groups({"order_read", "order_write"})
      */
     private $name;
 
@@ -50,13 +59,15 @@ class Order
 
     /**
      * @ORM\Column(type="string", unique = true)
+     * @Groups({"order_read"})
      */
-    private $orderNumber;
+    private $orderNumber = null;
 
     /**
      * @ORM\Column(type="decimal", precision = 2)
+     * @Groups({"order_read", "order_write"})
      */
-    private $amount;
+    private $amount = 0;
 
     /**
      * @var User
@@ -189,5 +200,14 @@ class Order
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param mixed $orderNumber
+     * @PrePersist
+     */
+    public function generateOrderNumber($orderNumber)
+    {
+        $this->orderNumber = substr(sha1(md5(microtime(), rand(0,100000))), 0, 30);
     }
 }

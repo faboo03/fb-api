@@ -1,7 +1,10 @@
-
-complete:
-    path:     /{orderNumber}/complete
+payment_complete:
+    path:     /{orderNumber}/success
     defaults: { _controller: AppBundle:Payment:complete }
+
+payment_cancel:
+    path:     /{orderNumber}/cancel
+    defaults: { _controller: AppBundle:Payment:cancel }
 
 details:
     path:     /{orderNumber}/details
