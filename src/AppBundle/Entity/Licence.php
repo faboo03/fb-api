@@ -9,33 +9,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table(name="licence")
  * @ORM\Entity()
+ * @UniqueEntity(fields={"licenceNumber"})
+ * @UniqueEntity(fields={"activationHash"})
  * @HasLifecycleCallbacks
  */
 class Licence
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
      * @ORM\Column(name="licence_number", type="string", unique = true)
-     * @Groups({"order_read"})
+     * @ORM\Id
      */
     private $licenceNumber = null;
 
     /**
      * @ORM\Column(name="activation_hash", type="string", unique = true, nullable=true)
-     * @Groups({"order_read"})
+     * @Groups({"licence_activation"})
      */
     private $activationHash = null;
 
@@ -54,22 +47,6 @@ class Licence
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return mixed

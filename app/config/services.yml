@@ -1,4 +1,6 @@
 services:
+
+#Users
     resource.user:
         parent:    "api.resource"
         arguments: [ "AppBundle\\Entity\\User" ]
@@ -9,6 +11,7 @@ services:
                    arguments: [ { groups: [ "user_write" ] } ]
         tags:      [ { name: "api.resource" } ]
 
+#Order
     resource.order:
         parent:    "api.resource"
         arguments: [ "AppBundle\\Entity\\Order" ]
@@ -21,23 +24,55 @@ services:
                    arguments: [ { groups: [ "order_write" ] } ]
         tags:      [ { name: "api.resource" } ]
 
+#Licences
+    resource.licence.collection_operation.get:
+        class:     "Dunglas\ApiBundle\Api\Operation\Operation"
+        public:    false
+        factory:   [ "@api.operation_factory", "createCollectionOperation" ]
+        arguments: [ "@resource.licence", "GET"]
+
+    resource.licence.item_operation.get:
+        class:     "Dunglas\ApiBundle\Api\Operation\Operation"
+        public:    false
+        factory:   [ "@api.operation_factory", "createItemOperation" ]
+        arguments: [ "@resource.licence", "GET", "/licences/{licenceNumber}" ]
+
+    resource.licence.item_operation.activation:
+        class:   "Dunglas\ApiBundle\Api\Operation\Operation"
+        public:  false
+        factory: [ "@api.operation_factory", "createItemOperation" ]
+        arguments:
+            -    "@resource.licence"               # Resource
+            -    [ "PUT" ]                         # Methods
+            -    "/licences/{licenceNumber}/activate"         # Path
+            -    "AppBundle:Licences:activate"     # Controller
+            -    "put_licence_activate"            # Route name
+            -    # Context (will be present in Hydra documentation)
+                 "@type":       "hydra:Operation"
+                 "hydra:title": "activation"
+                 "returns":     "xmls:string"
+
     resource.licence:
         parent:    "api.resource"
         arguments: [ "AppBundle\\Entity\\Licence" ]
         calls:
             -      method:    "initFilters"
                    arguments: [ [ "@resource.user.order_filter" ] ]
-#            -      method:    "initNormalizationContext"
-#                   arguments: [ { groups: [ "order_read" ] } ]
-#            -      method:    "initDenormalizationContext"
-#                   arguments: [ { groups: [ "order_write" ] } ]
+            -      method:    "initDenormalizationContext"
+                   arguments: [ { groups: [ "licence_activation" ] } ]
+            -      method:    "initItemOperations"
+                   arguments: [ [ "@resource.licence.item_operation.get", "@resource.licence.item_operation.activation" ] ]
+            -      method:    "initCollectionOperations"
+                   arguments: [ [ "@resource.licence.collection_operation.get"] ]
         tags:      [ { name: "api.resource" } ]
 
+#Listener
     payment.listener:
         class: "AppBundle\\EventListener\\PaymentListener"
         arguments: ["@router"]
         tags:  [ { name: "kernel.event_listener", event: "api.post_create", method: "onPostCreate" } ]
 
+#Filters
     resource.user.order_filter:
         class:    "AppBundle\\Filter\\UserFilter"
         arguments: ["@security.token_storage","@doctrine"]
