@@ -1,0 +1,19 @@
+AppBundle\Entity\Licence:
+    licence_fabien_1:
+        licenceNumber: 1234-5678-0001
+        activationHash: <md5()>
+        User: @fabien
+        Order: @order_fabien_1
+    licence_fabien_2:
+        licenceNumber: 1234-5678-0002
+        activationHash: <md5()>
+        User: @fabien
+        Order: @order_fabien_2
+    licence_fabien_3:
+        licenceNumber: 1234-5678-0003
+        User: @fabien
+        Order: @order_fabien_3
+    licence_{1..10}:
+        licenceNumber (unique): 1234-5678-0<numberBetween(1, 100)>
+        User: @order_random_<current()>->user
+        Order: @order_random_<current()>

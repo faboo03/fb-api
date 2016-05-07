@@ -1,5 +1,5 @@
 AppBundle\Entity\User:
-    user_{1..10}:
+    user_random_{1..10}:
         username: <userName()>
         email: <email()>
         enabled: true

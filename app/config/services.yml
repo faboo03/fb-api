@@ -21,6 +21,18 @@ services:
                    arguments: [ { groups: [ "order_write" ] } ]
         tags:      [ { name: "api.resource" } ]
 
+    resource.licence:
+        parent:    "api.resource"
+        arguments: [ "AppBundle\\Entity\\Licence" ]
+        calls:
+            -      method:    "initFilters"
+                   arguments: [ [ "@resource.user.order_filter" ] ]
+#            -      method:    "initNormalizationContext"
+#                   arguments: [ { groups: [ "order_read" ] } ]
+#            -      method:    "initDenormalizationContext"
+#                   arguments: [ { groups: [ "order_write" ] } ]
+        tags:      [ { name: "api.resource" } ]
+
     payment.listener:
         class: "AppBundle\\EventListener\\PaymentListener"
         arguments: ["@router"]

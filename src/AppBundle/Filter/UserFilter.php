@@ -56,16 +56,6 @@ class UserFilter extends AbstractFilter
             }
         }
 
-//        foreach ($metadata->getAssociationNames() as $associationName) {
-//            if ($this->isPropertyEnabled($associationName)) {
-//                $description[$associationName] = [
-//                    'property' => $associationName,
-//                    'type' => 'iri',
-//                    'required' => false,
-//                ];
-//            }
-//        }
-
         return $description;
     }
 }
