@@ -3,19 +3,32 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Order;
-use Dunglas\ApiBundle\Controller\ResourceController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Dunglas\ApiBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
 
-class PaymentController extends Controller
+class PaymentController extends ResourceController
 {
-    public function completeAction(Order $order)
+    public function completeAction($request, $orderNumber)
     {
-        die('Complete');
+        $resource = $this->getResource($request);
+        $object = $this->findOrThrowNotFound($resource, $orderNumber);
+
+        $paypalManager = $this->get('appbundle_payment_manager');
+        $paypalManager->complete($object);
+
+        return $this->getSuccessResponse($resource, $object);
+
     }
 
-    public function cancelAction(Order $order)
+    public function canceledAction($request, $orderNumber)
     {
-        die('Cancel');
+        $resource = $this->getResource($request);
+        $object = $this->findOrThrowNotFound($resource, $orderNumber);
+
+        $paypalManager = $this->get('appbundle_payment_manager');
+        $paypalManager->complete($object);
+
+        return $this->getSuccessResponse($resource, $object);
     }
 }

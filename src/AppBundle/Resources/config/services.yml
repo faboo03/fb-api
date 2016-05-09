@@ -1,18 +1,7 @@
-#parameters:
-#    acme_api.event.jwt_response_listener.class: AppBundle\EventListener\JWTResponseListener
-#    acme_api.event.jwt_created_listener.class: AppBundle\EventListener\JWTCreatedListener
-#    acme_api.event.jwt_decoded_listener.class: AppBundle\EventListener\JWTDecodedListener
-#
-#services:
-#    acme_api.event.jwt_response_listener:
-#        class: %acme_api.event.jwt_response_listener.class%
-#        tags:
-#            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
-#    acme_api.event.jwt_created_listener:
-#        class: %acme_api.event.jwt_created_listener.class%
-#        tags:
-#            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
-#    acme_api.event.jwt_decoded_listener:
-#        class: %acme_api.event.jwt_decoded_listener.class%
-#        tags:
-#            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }
+services:
+     appbundle_payment_manager:
+         class: AppBundle\Manager\PaypalPaymentManager
+         arguments:
+             - @doctrine.orm.entity_manager
+             - @router
+             - @payment.plugin_controller

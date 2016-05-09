@@ -120,6 +120,9 @@ class Order
         return $this->amount;
     }
 
+    /**
+     * @return PaymentInstruction
+     */
     public function getPaymentInstruction()
     {
         return $this->paymentInstruction;

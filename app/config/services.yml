@@ -12,6 +12,42 @@ services:
         tags:      [ { name: "api.resource" } ]
 
 #Order
+    resource.order.item_operation.get:
+        class:     "Dunglas\ApiBundle\Api\Operation\Operation"
+        public:    false
+        factory:   [ "@api.operation_factory", "createItemOperation" ]
+        arguments: [ "@resource.order", "GET", "/orders/{orderNumber}" ]
+
+    resource.order.item_operation.complete:
+        class:   "Dunglas\ApiBundle\Api\Operation\Operation"
+        public:  false
+        factory: [ "@api.operation_factory", "createItemOperation" ]
+        arguments:
+            -    "@resource.order"               # Resource
+            -    [ "GET" ]                       # Methods
+            -    "/orders/{orderNumber}/complete"         # Path
+            -    "AppBundle:Payment:complete"     # Controller
+            -    "payment_complete"            # Route name
+            -    # Context (will be present in Hydra documentation)
+                 "@type":       "hydra:Operation"
+                 "hydra:title": "completed"
+                 "returns":     "xmls:string"
+
+    resource.order.item_operation.canceled:
+        class:   "Dunglas\ApiBundle\Api\Operation\Operation"
+        public:  false
+        factory: [ "@api.operation_factory", "createItemOperation" ]
+        arguments:
+            -    "@resource.order"               # Resource
+            -    [ "GET" ]                       # Methods
+            -    "orders/{orderNumber}/canceled"         # Path
+            -    "AppBundle:Payment:canceled"     # Controller
+            -    "payment_canceled"            # Route name
+            -    # Context (will be present in Hydra documentation)
+                 "@type":       "hydra:Operation"
+                 "hydra:title": "canceled"
+                 "returns":     "xmls:string"
+
     resource.order:
         parent:    "api.resource"
         arguments: [ "AppBundle\\Entity\\Order" ]
@@ -22,6 +58,8 @@ services:
                    arguments: [ { groups: [ "order_read" ] } ]
             -      method:    "initDenormalizationContext"
                    arguments: [ { groups: [ "order_write" ] } ]
+            -      method:    "initItemOperations"
+                   arguments: [ [ "@resource.order.item_operation.get","@resource.order.item_operation.complete", "@resource.order.item_operation.canceled" ] ]
         tags:      [ { name: "api.resource" } ]
 
 #Licences
